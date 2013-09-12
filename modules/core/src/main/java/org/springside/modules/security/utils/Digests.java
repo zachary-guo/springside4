@@ -29,7 +29,7 @@ public class Digests {
 	private static SecureRandom random = new SecureRandom();
 
 	/**
-	 * 对输入字符串进行sha1散列.
+	 * 对输入进行 sha1 散列
 	 */
 	public static byte[] sha1(byte[] input) {
 		return digest(input, SHA1, null, 1);
@@ -42,9 +42,24 @@ public class Digests {
 	public static byte[] sha1(byte[] input, byte[] salt, int iterations) {
 		return digest(input, SHA1, salt, iterations);
 	}
+	
+	/**
+	 * 对输入进行 MD5 散列
+	 */
+	public static byte[] md5(byte[] input) {
+		return digest(input, MD5, null, 1);
+	}
+	
+	public static byte[] md5(byte[] input, byte[] salt) {
+		return digest(input, MD5, salt, 1);
+	}
+	
+	public static byte[] md5(byte[] input, byte[] salt, int iterations) {
+		return digest(input, MD5, salt, iterations);
+	}
 
 	/**
-	 * 对字符串进行散列, 支持md5与sha1算法.
+	 * 对输入进行散列, 支持 md5 与 sha1 算法
 	 */
 	private static byte[] digest(byte[] input, String algorithm, byte[] salt, int iterations) {
 		try {
