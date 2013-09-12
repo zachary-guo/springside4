@@ -163,6 +163,11 @@ public class Selenium2 {
 		element.clear();
 		element.sendKeys(text);
 	}
+	
+	public void select(By by, String value) {
+		WebElement element = driver.findElement(by);
+		element.sendKeys(value);
+	}
 
 	/**
 	 * 点击Element.
