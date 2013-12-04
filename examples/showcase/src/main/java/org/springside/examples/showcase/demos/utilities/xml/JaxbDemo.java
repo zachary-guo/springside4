@@ -1,8 +1,12 @@
 package org.springside.examples.showcase.demos.utilities.xml;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.List;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -15,6 +19,9 @@ import com.google.common.collect.Lists;
 
 /**
  * 演示基于JAXB2.0的Java对象-XML转换及Dom4j的使用.
+ * 
+ * marshal, Java -> XML
+ * unmarshal, XML -> Java
  * 
  * 演示用xml如下:
  * 
@@ -94,6 +101,33 @@ public class JaxbDemo {
 		String xml = JaxbMapper.toXml(userList, "userList", User.class, "UTF-8");
 		System.out.println("Jaxb Object List to Xml result:\n" + xml);
 	}
+	
+	/**
+	 * <users></users> 有多个 user 时，返回的是 List<User> 对象。
+	 */
+	@Test
+	public void xmlWithListToObject() {
+		String xml = generateXmlListByDom4j();
+		Users users = JaxbMapper.fromXml(xml, Users.class);
+		// return users.getUsers();
+		assertEquals(2, users.getUsers().size());
+	}
+	
+	// 必须是 static 的
+	@XmlRootElement(name = "users")
+	private static class Users {
+		List<User> users;
+
+		@XmlElement(name = "user")
+		public List<User> getUsers() {
+			return users;
+		}
+
+		public void setUsers(List<User> users) {
+			this.users = users;
+		}
+		
+	}
 
 	/**
 	 * 使用Dom4j生成测试用的XML文档字符串.
@@ -119,6 +153,22 @@ public class JaxbDemo {
 		Element houses = root.addElement("houses");
 		houses.addElement("house").addAttribute("key", "bj").addText("house1");
 		houses.addElement("house").addAttribute("key", "gz").addText("house2");
+
+		return document.asXML();
+	}
+	
+	/**
+	 * 使用 Dom4j 生成测试用的 XML List 文档字符串
+	 */
+	private static String generateXmlListByDom4j() {
+		Document document = DocumentHelper.createDocument();
+		Element root = document.addElement("users");
+		
+		Element user1 = root.addElement("user").addAttribute("id", "1");
+		user1.addElement("name").setText("calvin");
+		
+		Element user2 = root.addElement("user").addAttribute("id", "2");
+		user2.addElement("name").setText("zachary");
 
 		return document.asXML();
 	}
