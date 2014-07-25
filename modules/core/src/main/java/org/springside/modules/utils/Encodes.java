@@ -28,6 +28,7 @@ public class Encodes {
 
 	private static final String DEFAULT_URL_ENCODING = "UTF-8";
 	private static final char[] BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".toCharArray();
+	private static final char[] NUMBER = "0123456789".toCharArray();
 
 	/**
 	 * Hex编码.
@@ -75,6 +76,17 @@ public class Encodes {
 		char[] chars = new char[input.length];
 		for (int i = 0; i < input.length; i++) {
 			chars[i] = BASE62[((input[i] & 0xFF) % BASE62.length)];
+		}
+		return new String(chars);
+	}
+	
+	/**
+	 * Numbe编码。
+	 */
+	public static String encodeNumber(byte[] input) {
+		char[] chars = new char[input.length];
+		for (int i = 0; i < input.length; i++) {
+			chars[i] = NUMBER[((input[i] & 0xFF) % NUMBER.length)];
 		}
 		return new String(chars);
 	}

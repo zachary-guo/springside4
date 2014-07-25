@@ -30,6 +30,13 @@ public class Identities {
 	public static String uuid2() {
 		return UUID.randomUUID().toString().replaceAll("-", "");
 	}
+	
+	/**
+	 * 使用SecureRandom随机生成Int.
+	 */
+	public static int randomInt() {
+		return Math.abs(random.nextInt());
+	}
 
 	/**
 	 * 使用SecureRandom随机生成Long.
@@ -45,5 +52,14 @@ public class Identities {
 		byte[] randomBytes = new byte[length];
 		random.nextBytes(randomBytes);
 		return Encodes.encodeBase62(randomBytes);
+	}
+	
+	/**
+	 * 基于Number编码的SecureRandom随机生成bytes.
+	 */
+	public static String randomNumber(int length) {
+		byte[] randomBytes = new byte[length];
+		random.nextBytes(randomBytes);
+		return Encodes.encodeNumber(randomBytes);
 	}
 }
